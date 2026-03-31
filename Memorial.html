@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Loving Memory - Bill Acomb Memorial Car Show</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --chrome-silver: #d1d5db;
+            --steel-gray: #4b5563;
+            --stripe-black: #000000;
+            --asphalt: #0a0a0a;
+            --deep-black: #000000;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--asphalt);
+            color: #e5e7eb;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        .font-header { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.2em; }
+        .font-accent { font-family: 'Playfair Display', serif; }
+
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .hero-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            filter: contrast(1.1) brightness(0.45) grayscale(0.3);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 50%, rgba(10,10,10,1) 100%);
+            z-index: 2;
+        }
+
+        .hero-stripes {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 3;
+        }
+        .hero-stripes div {
+            width: 120px;
+            height: 100%;
+            background: black;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+        }
+
+        .chrome-card {
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 4px solid var(--chrome-silver);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chrome-card:hover {
+            transform: translateY(-8px);
+            border-top-color: #fff;
+            background: rgba(25, 25, 25, 0.85);
+            box-shadow: 0 35px 60px -15px rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-primary {
+            background: var(--chrome-silver);
+            color: #000;
+            padding: 1.25rem 3rem;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            transition: all 0.4s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            background: #ffffff;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .racing-stripe-separator {
+            height: 24px;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            position: relative;
+            z-index: 10;
+        }
+        .racing-stripe-separator div {
+            width: 60px;
+            height: 100%;
+            background: #1a1a1a;
+        }
+
+        .divider-line {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
+            margin: 5rem 0;
+        }
+
+        .drop-shadow-text {
+            text-shadow: 0 4px 30px rgba(0,0,0,1);
+        }
+
+        .content-wrap {
+            position: relative;
+            z-index: 5;
+        }
+
+        .guestbook-entry {
+            border-left: 2px solid #333;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom scrollbar for chrome aesthetic */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- Hero Area -->
+    <header class="hero-section">
+        <div class="hero-image-container">
+            <img src="https://images.unsplash.com/photo-1555353540-64580b51c258?q=80&w=2000&auto=format&fit=crop" 
+                 alt="Silver 1969 Camaro"
+                 onerror="this.src='https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000'">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-stripes">
+            <div></div>
+            <div></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-6 max-w-5xl content-wrap">
+            <div class="mb-8 inline-block px-10 py-2 border border-white/10 text-zinc-400 font-header text-xs tracking-[0.7em] bg-black/70 backdrop-blur-md uppercase">
+                A Celebration of Life
+            </div>
+            <h1 class="font-accent text-7xl md:text-9xl mb-6 leading-none drop-shadow-text text-white">
+                Bill <span class="italic font-light">Acomb</span>
+            </h1>
+            <p class="font-header text-lg md:text-2xl text-zinc-300 mb-16 tracking-[0.4em] drop-shadow-text uppercase">
+                Honoring a Legacy of Love & Horsepower
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
+                <a href="#event-details" class="btn-primary">View the Pit Details</a>
+                <a href="#obituary" class="group px-12 py-4 border border-zinc-700 bg-black/40 font-header hover:bg-zinc-800 transition-all backdrop-blur-md text-sm tracking-widest text-zinc-300">
+                    The Final Lap <span class="inline-block transition-transform group-hover:translate-x-2">→</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="racing-stripe-separator">
+        <div></div>
+        <div></div>
+    </div>
+
+    <main class="max-w-6xl mx-auto px-6 py-24">
+        
+        <!-- Info Grid -->
+        <section id="event-details" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+            <div class="chrome-card p-10 text-center flex flex-col justify-between">
+                <div>
+                    <div class="text-zinc-500 mb-8 flex justify-center opacity-50">
+                        <svg class="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="font-header text-2xl mb-4 text-white">Date & Time</h3>
+                    <p class="text-zinc-200 text-xl font-bold mb-1">Saturday, April 18, 2026</p>
+                    <p class="text-zinc-500 tracking-wider">1:00 PM — 4:00 PM</p>
+                </div>
+                <div class="mt-8 pt-8 border-t border-white/5">
+                    <span class="text-[11px] text-zinc-400 font-bold uppercase tracking-[0.3em]">Rev the Engines: 2:30 PM</span>
+                </div>
+            </div>
+
+            <div class="chrome-card p-10 text-center flex flex-col justify-between">
+                <div>
+                    <div class="text-zinc-500 mb-8 flex justify-center opacity-50">
+                        <svg class="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h3 class="font-header text-2xl mb-4 text-white">The Venue</h3>
+                    <p class="text-zinc-200 text-xl font-bold mb-1">NW Differential</p>
+                    <p class="text-zinc-500 leading-relaxed">211 S Lewis St<br>Monroe, WA 98272</p>
+                </div>
+                <div class="mt-8 pt-8 border-t border-white/5">
+                    <a href="https://maps.google.com/?q=211+S+Lewis+St+Monroe+WA+98272" target="_blank" class="inline-block text-zinc-400 hover:text-white text-[10px] font-bold uppercase tracking-widest border-b border-zinc-700 pb-1 transition-colors">Get Directions</a>
+                </div>
+            </div>
+
+            <div class="chrome-card p-10 text-center flex flex-col justify-between">
+                <div>
+                    <div class="text-zinc-500 mb-8 flex justify-center opacity-50">
+                        <svg class="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="font-header text-2xl mb-4 text-white">The Memorial</h3>
+                    <p class="text-zinc-200 text-xl font-bold mb-1">Car Show Style</p>
+                    <p class="text-zinc-500 text-sm leading-relaxed px-4">Polished chrome and open hoods. Bring your projects, classics, or daily drivers in Bill's honor.</p>
+                </div>
+                <div class="mt-8 pt-8 border-t border-white/5">
+                    <span class="text-[11px] text-zinc-400 font-bold uppercase tracking-[0.3em]">Garage snacks will be served</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brief Tribute Section -->
+        <section id="obituary" class="max-w-4xl mx-auto mb-40">
+            <div class="divider-line"></div>
+            
+            <div class="bg-black/40 border-y border-white/5 py-12 mb-16 backdrop-blur-sm">
+                <h2 class="font-accent text-5xl md:text-8xl text-center text-white italic">The Final Lap</h2>
+            </div>
+
+            <div class="text-zinc-300 text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto text-center font-light italic">
+                <p class="mb-10">
+                    "Bill’s life was a masterclass in craftsmanship. Whether he was blueprinting a dream, fine-tuning his beloved 1969 Camaro, or navigating the open roads toward Lake Chelan, he did it all with precision, a sly smile, and a generous heart."
+                </p>
+                <p class="mb-16 font-normal not-italic text-zinc-400 text-lg">
+                    He didn’t just drive through life; he embraced every gear. We invite you to join us at NW Differential to share a story, the rev of an engine, and a final toast to a man who built things to last.
+                </p>
+                
+                <div class="mt-12">
+                    <button class="text-zinc-500 font-header tracking-[0.3em] text-xs border-b border-zinc-800 pb-2 hover:text-white hover:border-white transition-all uppercase">Read the full biography</button>
+                </div>
+            </div>
+            <div class="divider-line"></div>
+        </section>
+
+        <!-- Tribute Form & List -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            
+            <!-- Form -->
+            <section class="bg-zinc-950 border border-zinc-900 p-10 md:p-14 relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 p-4 opacity-[0.03] pointer-events-none text-white">
+                    <svg class="w-64 h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99z"/></svg>
+                </div>
+                
+                <h2 class="font-header text-3xl mb-4 text-white">Guestbook</h2>
+                <p class="text-zinc-500 mb-10 text-sm tracking-wide">Leave a note for the family or let us know about the car you're bringing.</p>
+                
+                <div id="tribute-form" class="space-y-6">
+                    <div class="group">
+                        <label class="block font-header text-[10px] text-zinc-600 mb-3 tracking-widest group-focus-within:text-zinc-400 transition-colors">Guest / Driver Name</label>
+                        <input type="text" id="guest-name" class="w-full bg-black border border-zinc-800 rounded-none p-5 text-white focus:outline-none focus:border-zinc-500 transition-all placeholder-zinc-800" placeholder="e.g. John Smith">
+                    </div>
+                    <div class="group">
+                        <label class="block font-header text-[10px] text-zinc-600 mb-3 tracking-widest group-focus-within:text-zinc-400 transition-colors">Share a Story or Vehicle Info</label>
+                        <textarea id="guest-msg" rows="5" class="w-full bg-black border border-zinc-800 rounded-none p-5 text-white focus:outline-none focus:border-zinc-500 transition-all placeholder-zinc-800" placeholder="Your memory or vehicle details..."></textarea>
+                    </div>
+                    <button onclick="postTribute()" class="btn-primary w-full mt-4">Post Tribute</button>
+                </div>
+
+                <div id="success-state" class="hidden text-center py-12">
+                    <div class="inline-block p-4 rounded-full bg-zinc-900 text-zinc-400 mb-6 animate-bounce">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-header mb-3 text-white">Memory Recorded</h3>
+                    <p class="text-zinc-500 text-sm">Thank you for sharing. It will be added to the wall shortly.</p>
+                    <button onclick="resetForm()" class="mt-8 text-zinc-600 text-[10px] uppercase tracking-widest hover:text-zinc-300">Post another</button>
+                </div>
+            </section>
+
+            <!-- Memorial Wall List -->
+            <section>
+                <h2 class="font-header text-3xl mb-10 text-white flex items-center gap-4">
+                    The Wall
+                    <span class="h-px flex-1 bg-zinc-900"></span>
+                </h2>
+                <div id="guestbook-list" class="space-y-10">
+                    <p id="empty-wall-msg" class="text-zinc-600 font-header text-xs tracking-widest italic py-4">No tributes posted yet. Be the first to share a memory.</p>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black py-32 border-t border-zinc-900">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="font-accent text-4xl mb-6 text-white italic">In Loving Memory</div>
+            <p class="text-zinc-500 font-header tracking-[0.7em] text-[11px] mb-16 uppercase">William Edward Acomb, Jr. • 1947 — 2025</p>
+            <div class="flex justify-center items-center gap-8">
+                <div class="h-px w-20 bg-zinc-800"></div>
+                <span class="text-zinc-700 font-header text-[10px] tracking-[0.5em] uppercase italic">Gone but never outrun</span>
+                <div class="h-px w-20 bg-zinc-800"></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function postTribute() {
+            const nameEl = document.getElementById('guest-name');
+            const msgEl = document.getElementById('guest-msg');
+            const name = nameEl.value.trim();
+            const msg = msgEl.value.trim();
+
+            if (name && msg) {
+                // Hide empty message if it exists
+                const emptyMsg = document.getElementById('empty-wall-msg');
+                if (emptyMsg) emptyMsg.classList.add('hidden');
+
+                // Add to list visually
+                const list = document.getElementById('guestbook-list');
+                const newEntry = document.createElement('div');
+                newEntry.className = 'guestbook-entry pl-6 py-2';
+                newEntry.innerHTML = `
+                    <p class="text-zinc-300 mb-2 leading-relaxed">"${msg}"</p>
+                    <p class="font-header text-xs text-zinc-400 tracking-widest">— ${name}</p>
+                `;
+                list.prepend(newEntry);
+
+                // Show success
+                document.getElementById('tribute-form').classList.add('hidden');
+                document.getElementById('success-state').classList.remove('hidden');
+                
+                // Clear fields
+                nameEl.value = '';
+                msgEl.value = '';
+            } else {
+                const btn = document.querySelector('.btn-primary');
+                const originalText = btn.textContent;
+                btn.textContent = "Please enter details";
+                btn.style.background = "#991b1b";
+                btn.style.color = "#fff";
+                setTimeout(() => { 
+                    btn.textContent = originalText;
+                    btn.style.background = "";
+                    btn.style.color = "";
+                }, 2000);
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('tribute-form').classList.remove('hidden');
+            document.getElementById('success-state').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
