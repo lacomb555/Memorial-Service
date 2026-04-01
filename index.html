@@ -162,6 +162,19 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Collapsible Obituary Styling */
+        #full-obituary {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            opacity: 0;
+        }
+
+        #full-obituary.is-visible {
+            max-height: 3000px; /* Large enough to fit content */
+            opacity: 1;
+        }
+
         /* Custom scrollbar for chrome aesthetic */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #000; }
@@ -271,15 +284,16 @@
                     He didn’t just drive through life; he embraced every gear. We invite you to join us at NW Differential to share a story, the rev of an engine, and a final toast to a man who built things to last.
                 </p>
                 
-                <div class="mt-12 text-center">
-                    <a href="#full-obituary" class="text-zinc-500 font-header tracking-[0.3em] text-xs border-b border-zinc-800 pb-2 hover:text-white hover:border-white transition-all uppercase inline-block">Read the full obituary</a>
+                <div class="mt-12 text-center" id="obituary-trigger-container">
+                    <button onclick="toggleObituary()" class="text-zinc-500 font-header tracking-[0.3em] text-xs border-b border-zinc-800 pb-2 hover:text-white hover:border-white transition-all uppercase inline-block cursor-pointer">
+                        Read the Full Obituary
+                    </button>
                 </div>
             </div>
-            <div class="divider-line"></div>
         </section>
 
-        <!-- Full Obituary Section -->
-        <section id="full-obituary" class="max-w-3xl mx-auto mb-40 px-6">
+        <!-- Full Obituary Section (Initially Hidden) -->
+        <section id="full-obituary" class="max-w-3xl mx-auto px-6 mb-24">
             <h2 class="font-header text-2xl mb-12 text-white tracking-widest text-center">In Loving Memory of Bill Acomb</h2>
             <div class="text-zinc-400 leading-relaxed space-y-8 text-lg font-light">
                 <p class="font-bold text-zinc-200">Beloved Father, Grandfather, Brother, and Friend</p>
@@ -301,13 +315,10 @@
                 <p class="italic text-zinc-200 mt-12">Rest easy, Dad. We’ll carry your tools from here.</p>
                 
                 <p class="font-header text-sm tracking-widest text-zinc-500">— Lisa & Jeff</p>
-
-                <div class="mt-16 p-8 bg-white/5 border border-white/10 text-center">
-                    <p class="text-zinc-300 italic text-base">A memorial service, including a car show with friends, family and colleagues is planned for April 18, 2026. Please inquire for more details.</p>
-                </div>
             </div>
-            <div class="divider-line"></div>
         </section>
+
+        <div class="divider-line"></div>
 
         <!-- Tribute Form & List -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
@@ -371,6 +382,23 @@
     </footer>
 
     <script>
+        function toggleObituary() {
+            const obit = document.getElementById('full-obituary');
+            const trigger = document.getElementById('obituary-trigger-container');
+            
+            if (obit.classList.contains('is-visible')) {
+                obit.classList.remove('is-visible');
+                trigger.querySelector('button').textContent = "Read the Full Obituary";
+            } else {
+                obit.classList.add('is-visible');
+                trigger.querySelector('button').textContent = "Hide Obituary";
+                // Smooth scroll to the content
+                setTimeout(() => {
+                    obit.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
         function postTribute() {
             const nameEl = document.getElementById('guest-name');
             const msgEl = document.getElementById('guest-msg');
@@ -378,11 +406,9 @@
             const msg = msgEl.value.trim();
 
             if (name && msg) {
-                // Hide empty message if it exists
                 const emptyMsg = document.getElementById('empty-wall-msg');
                 if (emptyMsg) emptyMsg.classList.add('hidden');
 
-                // Add to list visually
                 const list = document.getElementById('guestbook-list');
                 const newEntry = document.createElement('div');
                 newEntry.className = 'guestbook-entry pl-6 py-2';
@@ -392,11 +418,9 @@
                 `;
                 list.prepend(newEntry);
 
-                // Show success
                 document.getElementById('tribute-form').classList.add('hidden');
                 document.getElementById('success-state').classList.remove('hidden');
                 
-                // Clear fields
                 nameEl.value = '';
                 msgEl.value = '';
             } else {
@@ -420,3 +444,4 @@
     </script>
 </body>
 </html>
+    
