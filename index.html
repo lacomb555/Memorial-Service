@@ -152,16 +152,6 @@
             z-index: 5;
         }
 
-        .guestbook-entry {
-            border-left: 2px solid #333;
-            animation: fadeIn 0.8s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         #full-obituary {
             max-height: 0;
             overflow: hidden;
@@ -307,51 +297,6 @@
         </section>
 
         <div class="divider-line"></div>
-
-        <!-- Tribute Form & List -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            <section class="bg-zinc-950 border border-zinc-900 p-10 md:p-14 relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 p-4 opacity-[0.03] pointer-events-none text-white">
-                    <svg class="w-64 h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99z"/></svg>
-                </div>
-                
-                <h2 class="font-header text-3xl mb-4 text-white">Guestbook</h2>
-                <p class="text-zinc-500 mb-10 text-sm tracking-wide">Leave a note for the family or let us know about the car you're bringing.</p>
-                
-                <form id="tribute-form" class="space-y-6">
-                    <div class="group">
-                        <label class="block font-header text-[10px] text-zinc-600 mb-3 tracking-widest group-focus-within:text-zinc-400 transition-colors">Guest / Driver Name</label>
-                        <input type="text" id="guest-name" required class="w-full bg-black border border-zinc-800 rounded-none p-5 text-white focus:outline-none focus:border-zinc-500 transition-all placeholder-zinc-800" placeholder="e.g. John Smith">
-                    </div>
-                    <div class="group">
-                        <label class="block font-header text-[10px] text-zinc-600 mb-3 tracking-widest group-focus-within:text-zinc-400 transition-colors">Share a Story or Vehicle Info</label>
-                        <textarea id="guest-msg" required rows="5" class="w-full bg-black border border-zinc-800 rounded-none p-5 text-white focus:outline-none focus:border-zinc-500 transition-all placeholder-zinc-800" placeholder="Your memory or vehicle details..."></textarea>
-                    </div>
-                    <button type="submit" id="submit-btn" class="btn-primary w-full mt-4">Post Tribute</button>
-                </form>
-
-                <div id="success-state" class="hidden text-center py-12">
-                    <div class="inline-block p-4 rounded-full bg-zinc-900 text-zinc-400 mb-6 animate-bounce">
-                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-header mb-3 text-white">Memory Recorded</h3>
-                    <p class="text-zinc-500 text-sm">Thank you for sharing. It is now saved on the wall.</p>
-                    <button onclick="resetForm()" class="mt-8 text-zinc-600 text-[10px] uppercase tracking-widest hover:text-zinc-300">Post another</button>
-                </div>
-            </section>
-
-            <section>
-                <h2 class="font-header text-3xl mb-10 text-white flex items-center gap-4">
-                    The Wall <span id="tribute-count" class="text-xs text-zinc-600 font-normal"></span>
-                    <span class="h-px flex-1 bg-zinc-900"></span>
-                </h2>
-                <div id="guestbook-list" class="space-y-10">
-                    <div id="loading-spinner" class="py-10 text-center">
-                        <div class="inline-block w-6 h-6 border-2 border-zinc-700 border-t-zinc-400 rounded-full animate-spin"></div>
-                    </div>
-                </div>
-            </section>
-        </div>
     </main>
 
     <footer class="bg-black py-32 border-t border-zinc-900">
@@ -366,116 +311,7 @@
         </div>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'bill-acomb-memorial';
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        const guestbookList = document.getElementById('guestbook-list');
-        const tributeForm = document.getElementById('tribute-form');
-        const countDisplay = document.getElementById('tribute-count');
-
-        const tributesCollection = collection(db, 'artifacts', appId, 'public', 'data', 'tributes');
-
-        let user = null;
-
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Auth initialization failed:", error);
-            }
-        };
-
-        onAuthStateChanged(auth, (u) => {
-            user = u;
-            if (user) {
-                loadTributes();
-            }
-        });
-
-        initAuth();
-
-        function loadTributes() {
-            if (!user) return;
-
-            onSnapshot(tributesCollection, (snapshot) => {
-                const tributes = [];
-                snapshot.forEach(doc => tributes.push(doc.data()));
-                tributes.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-                renderTributes(tributes);
-            }, (error) => {
-                console.error("Listener failed:", error);
-                guestbookList.innerHTML = `<p class="text-zinc-600 text-xs uppercase tracking-widest italic">Syncing with the wall...</p>`;
-            });
-        }
-
-        function renderTributes(tributes) {
-            if (tributes.length === 0) {
-                guestbookList.innerHTML = `<p class="text-zinc-600 font-header text-xs tracking-widest italic py-4">No tributes posted yet. Be the first to share a memory.</p>`;
-                countDisplay.textContent = "";
-                return;
-            }
-
-            countDisplay.textContent = `(${tributes.length})`;
-            guestbookList.innerHTML = tributes.map(t => `
-                <div class="guestbook-entry pl-6 py-2">
-                    <p class="text-zinc-300 mb-2 leading-relaxed">"${t.message}"</p>
-                    <p class="font-header text-xs text-zinc-400 tracking-widest">— ${t.name}</p>
-                </div>
-            `).join('');
-        }
-
-        tributeForm.onsubmit = async (e) => {
-            e.preventDefault();
-            if (!user) return;
-
-            const name = document.getElementById('guest-name').value.trim();
-            const message = document.getElementById('guest-msg').value.trim();
-            const btn = document.getElementById('submit-btn');
-
-            if (name && message) {
-                btn.disabled = true;
-                btn.textContent = "SYNCING...";
-
-                try {
-                    await addDoc(tributesCollection, {
-                        name,
-                        message,
-                        timestamp: serverTimestamp(),
-                        userId: user.uid
-                    });
-
-                    tributeForm.classList.add('hidden');
-                    document.getElementById('success-state').classList.remove('hidden');
-                } catch (e) {
-                    btn.disabled = false;
-                    btn.textContent = "RETRY POST";
-                    console.error("Error adding document: ", e);
-                }
-            }
-        };
-
-        window.resetForm = () => {
-            tributeForm.classList.remove('hidden');
-            document.getElementById('success-state').classList.add('hidden');
-            document.getElementById('guest-name').value = '';
-            document.getElementById('guest-msg').value = '';
-            document.getElementById('submit-btn').disabled = false;
-            document.getElementById('submit-btn').textContent = "Post Tribute";
-        };
-
+    <script>
         window.toggleObituary = () => {
             const obit = document.getElementById('full-obituary');
             const trigger = document.querySelector('#obituary-trigger-container button');
