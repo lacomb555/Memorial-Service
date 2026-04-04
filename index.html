@@ -140,7 +140,7 @@
         .divider-line {
             height: 1px;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
-            margin: 5rem 0;
+            margin: 3rem 0;
         }
 
         .drop-shadow-text {
@@ -212,7 +212,7 @@
     <main class="max-w-6xl mx-auto px-6 py-24">
         
         <!-- Info Grid -->
-        <section id="event-details" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+        <section id="event-details" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <div class="chrome-card p-10 text-center flex flex-col justify-between">
                 <div>
                     <div class="text-zinc-500 mb-8 flex justify-center opacity-50">
@@ -257,10 +257,10 @@
         </section>
 
         <!-- Brief Tribute Section -->
-        <section id="obituary" class="max-w-4xl mx-auto mb-40">
+        <section id="obituary" class="max-w-4xl mx-auto mb-24">
             <div class="divider-line"></div>
             
-            <div class="bg-black/40 border-y border-white/5 py-12 mb-16 backdrop-blur-sm">
+            <div class="bg-black/40 border-y border-white/5 py-12 mb-12 backdrop-blur-sm">
                 <h2 class="font-accent text-5xl md:text-8xl text-center text-white italic">The Final Lap</h2>
             </div>
 
@@ -272,7 +272,7 @@
                     He didn’t just drive through life; he embraced every gear. We invite you to join us at NW Differential to share a story, the rev of an engine, and a final toast to a man who built things to last.
                 </p>
                 
-                <div class="mt-12 text-center" id="obituary-trigger-container">
+                <div class="mt-8 text-center" id="obituary-trigger-container">
                     <button onclick="toggleObituary()" class="text-zinc-500 font-header tracking-[0.3em] text-xs border-b border-zinc-800 pb-2 hover:text-white hover:border-white transition-all uppercase inline-block cursor-pointer">
                         Read the Full Obituary
                     </button>
@@ -281,7 +281,7 @@
         </section>
 
         <!-- Full Obituary Section -->
-        <section id="full-obituary" class="max-w-3xl mx-auto px-6 mb-24">
+        <section id="full-obituary" class="max-w-3xl mx-auto px-6 mb-12">
             <h2 class="font-header text-2xl mb-12 text-white tracking-widest text-center">In Loving Memory of Bill Acomb</h2>
             <div class="text-zinc-400 leading-relaxed space-y-8 text-lg font-light">
                 <p class="font-bold text-zinc-200">Beloved Father, Grandfather, Brother, and Friend</p>
@@ -295,11 +295,9 @@
                 <p class="font-header text-sm tracking-widest text-zinc-500">— Lisa & Jeff</p>
             </div>
         </section>
-
-        <div class="divider-line"></div>
     </main>
 
-    <footer class="bg-black py-32 border-t border-zinc-900">
+    <footer class="bg-black py-24 border-t border-zinc-900">
         <div class="max-w-6xl mx-auto px-6 text-center">
             <div class="font-accent text-4xl mb-6 text-white italic">In Loving Memory</div>
             <p class="text-zinc-500 font-header tracking-[0.7em] text-[11px] mb-16 uppercase">William Edward Acomb, Jr. • 1947 — 2025</p>
